@@ -148,7 +148,7 @@ ShopifyUploader.prototype.apply = function(compiler) {
     function uploadFile(file, cb) {
       that.shopify.asset.update(themeId, {
         key: file.target,
-        value: fs.readFileSync(file.path).toString()
+        attachment: fs.readFileSync(file.path).toString("base64")
       }).then((response) => {
         filesElapsed++;
         console.log(chalk.green("%s Uploaded [remaining %d]"), file.target, files.length - filesElapsed);
