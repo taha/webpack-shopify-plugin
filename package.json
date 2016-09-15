@@ -1,6 +1,6 @@
 {
   "name": "webpack-shopify-plugin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Taha Eldeib @tahaeldeib",
   "description": "WIP Webpack Shopify plugin",
   "main": "index.js",
