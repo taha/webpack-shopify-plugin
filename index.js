@@ -41,7 +41,7 @@ ShopifyUploader.prototype.apply = function(compiler) {
   const themeId = this.config.themeId;
   const themeBasePath = this.config.themeBase;
   const themeFolders = ['assets', 'config', 'layout', 'snippets', 'locales', 'templates'];
-  const themeFoldersRegex = new RegExp(_.escapeRegExp(themeBasePath) + "/(("+themeFolders.join("|")+")/(.+?))$");
+  const themeFoldersRegex = new RegExp(_.escapeRegExp(themeBasePath + path.sep) + "(("+themeFolders.join("|")+")" + _.escapeRegExp(path.sep) + "(.+?))$");
 
   // Create checksum map
   compiler.plugin('emit', (compilation, callback) => {
@@ -147,8 +147,8 @@ ShopifyUploader.prototype.apply = function(compiler) {
     
     function uploadFile(file, cb) {
       that.shopify.asset.update(themeId, {
-        key: file.target,
-        attachment: fs.readFileSync(file.path).toString("base64")
+        key: file.target.replace(/\\/, "/"), // make sure widnows dir sep is converted to unix
+        value: fs.readFileSync(file.path).toString()
       }).then((response) => {
         filesElapsed++;
         console.log(chalk.green("%s Uploaded [remaining %d]"), file.target, files.length - filesElapsed);
