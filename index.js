@@ -3,6 +3,7 @@ const path = require('path');
 const chalk = require('chalk');
 const Shopify = require('shopify-api-node');
 const crypto = require('crypto');
+const mime = require('mime-types');
 const _ = require('lodash');
 
 var compileError = function(compilation, error) {
@@ -146,10 +147,19 @@ ShopifyUploader.prototype.apply = function(compiler) {
     }
     
     function uploadFile(file, cb) {
-      that.shopify.asset.update(themeId, {
+      const fileMime = mime.lookup(file.target);
+      const toEncode = fileMime === false ? false : /image\/((?!svg).*)|font/.test(fileMime);
+      const data = {
         key: file.target.replace(/\\/, "/"), // make sure widnows dir sep is converted to unix
-        value: fs.readFileSync(file.path).toString()
-      }).then((response) => {
+      };
+
+      if (toEncode) {
+        data.attachment = fs.readFileSync(file.path).toString('base64');
+      } else {
+        data.value = fs.readFileSync(file.path).toString();
+      }
+
+      that.shopify.asset.update(themeId, data).then((response) => {
         filesElapsed++;
         console.log(chalk.green("%s Uploaded [remaining %d]"), file.target, files.length - filesElapsed);
         cb();
