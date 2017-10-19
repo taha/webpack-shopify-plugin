@@ -148,7 +148,7 @@ ShopifyUploader.prototype.apply = function(compiler) {
     
     function uploadFile(file, cb) {
       const fileMime = mime.lookup(file.target);
-      const toEncode = fileMime === false ? false : /image\/((?!svg).*)|font/.test(fileMime);
+      const toEncode = fileMime === false ? false : /image\/((?!svg).*)|font|video/.test(fileMime);
       const data = {
         key: file.target.replace(/\\/, "/"), // make sure widnows dir sep is converted to unix
       };
