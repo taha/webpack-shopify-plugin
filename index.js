@@ -41,7 +41,7 @@ ShopifyUploader.prototype.apply = function(compiler) {
   const that = this;
   const themeId = this.config.themeId;
   const themeBasePath = this.config.themeBase;
-  const themeFolders = ['assets', 'config', 'layout', 'snippets', 'locales', 'templates'];
+  const themeFolders = ['assets', 'config', 'layout', 'snippets', 'locales', 'templates', 'sections'];
   const themeFoldersRegex = new RegExp(_.escapeRegExp(themeBasePath + path.sep) + "(("+themeFolders.join("|")+")" + _.escapeRegExp(path.sep) + "(.+?))$");
 
   // Create checksum map
